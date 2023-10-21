@@ -32,7 +32,7 @@ Large_cactus = [pygame.image.load(os.path.join("dino/Cactus", "LargeCactus1.png"
                 pygame.image.load(os.path.join("dino/Cactus", "LargeCactus2.png")),
                 pygame.image.load(os.path.join("dino/Cactus", "LargeCactus3.png")),  ]
 
-BIRD         = [pygame.image.load(os.path.join("dino/Bird", "Bird1.png")),
+Bird         = [pygame.image.load(os.path.join("dino/Bird", "Bird1.png")),
                 pygame.image.load(os.path.join("dino/Bird", "Bird2.png")),]
 
 CLOUD        = pygame.image.load(os.path.join("dino/Other", "Cloud.png"))
@@ -156,60 +156,12 @@ class Cloud:
         screen.blit(self.image, (self.x, self.y))
 
 
-class Obstacle:
-    def __init__(self, image, type):
-        self.image = image
-        self.type = type
-        self.rect = self.image[self.type].get_rect()
-        self.rect.x = ScreenWidth
-
-    
-
-    def update(self):
-        self.rect.x  -= game_speed
-        if self.rect.x < -self.rect.width:
-            obstacles.pop()
-
-
-    def draw(self, screen):
-        screen.blit(self.image[self.type], self.rect)
-
-
-#kaktus chizish
-class SmallCactus(Obstacle):
-    def __init__(self, image):
-        self.type = random.randint(0, 2)
-        super().__init__(image, self.type)
-        self.rect.y = 325
-
-class LargeCACTUS(Obstacle):
-    def __init__(self, image):
-        self.type = random.randint(0, 2)
-        super().__init__(image, self.type)
-        self.rect.y = 300
-
-
-class Bird(Obstacle):
-    def __init__(self, image):
-        self.type = 0
-        super().__init__(image, self.type)
-        self.rect.y = 250
-        self.index = 0
-    
-    def draw(self, screen):
-        if self.index >=9:
-            self.index = 0
-        screen.blit(self.image[self.index//5], self.rect)
-        self.index += 1
-
-    
-        
 
 
 
 
 def main():
-    global game_speed, y_pos_bg, x_pos_bg, points, obstacles
+    global game_speed, y_pos_bg, x_pos_bg, points
     run = True
     clock = pygame.time.Clock()
     player = Dinosaur()
@@ -219,7 +171,7 @@ def main():
     y_pos_bg  = 380
     points = 0 
     font = pygame.font.Font("fonts/FreeSansBold.ttf", 20)
-    obstacles = []
+
 
     #uyin tezligi 
     def score():
@@ -258,21 +210,6 @@ def main():
 
         player.draw(screen)
         player.update(userInput)
-
-        if len(obstacles) == 0:
-            if random.randint(0, 2) == 0:
-                obstacles.append(SmallCactus(Small_cactus))
-            elif random.randint(0, 2) == 1:
-                obstacles.append(LargeCACTUS(Large_cactus))
-            elif random.randint(0, 2) == 2:
-                obstacles.append(Bird(BIRD))
-        
-
-        for obstacle in obstacles:
-            obstacle.draw(screen)
-            obstacle.update()
-            if player.dino_rect.colliderect(obstacle.rect):
-                pygame.draw.rect(screen, (255, 0, 0), player.dino_rect, 2)
 
         
         background()
