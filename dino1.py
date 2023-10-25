@@ -1,26 +1,25 @@
+#pygame va os kutubxonalarini import 
 import pygame
 import os
-
-
 # pygame initsalizatsiya qilish
 pygame.init()
-
 #Ekran sozlamalari
 ScreenHeight = 600
 ScreenWidth  = 1200
-
 # ekranni sozlamalarini qullash
 screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
 
 
 #yurish rasmlari yuklab olamiz
-Running = [pygame.image.load(os.path.join("dino/Dino", "DinoRun1.png")), pygame.image.load(os.path.join("dino/Dino", "DinoRun2.png"))]
+Running = [pygame.image.load(os.path.join("dino/Dino", "DinoRun1.png")), 
+           pygame.image.load(os.path.join("dino/Dino", "DinoRun2.png"))]
 
 #sakrash rasmlari yuklab olamiz
-Jumping = [pygame.image.load(os.path.join("dino/Dino", "DinoJump.png"))]
+Jumping = pygame.image.load(os.path.join("dino/Dino", "DinoJump.png"))
 
 #pastlash rasmlari yuklab olish
-Dunking = [pygame.image.load(os.path.join("dino/Dino", "DinoDuck1.png")), pygame.image.load(os.path.join("dino/Dino", "DinoDuck2.png"))]
+Dunking = [pygame.image.load(os.path.join("dino/Dino", "DinoDuck1.png")), 
+           pygame.image.load(os.path.join("dino/Dino", "DinoDuck2.png"))]
 
 Small_cactus = [pygame.image.load(os.path.join("dino/Cactus", "SmallCactus1.png")),
                 pygame.image.load(os.path.join("dino/Cactus", "SmallCactus2.png")),
@@ -44,8 +43,11 @@ BG           = pygame.image.load(os.path.join("dino/Other", "Track.png"))
 
 # dino classi
 class Dinosaur:
+    # dino pozitsiyasini aniqlaymiz
     x_pos = 80
     y_pos = 310
+    y_pos_duck = 340
+    Jump_Vel = 8.5
 
     def __init__(self):
         self.duck_img = Dunking
@@ -60,6 +62,7 @@ class Dinosaur:
         # qiyinlik darajasi
         self.step_index = 0
         self.image = self.run_img[0]
+        self.jump_vel = self.Jump_Vel
         self.dino_rect = self.image.get_rect()
 
         #dino pozitsiyasi
@@ -96,7 +99,11 @@ class Dinosaur:
 
     #dino pasayishi
     def duck(self):
-        pass
+        self.image = self.duck_img[self.step_index // 5]
+        self.dino_rect = self.image.get_rect()
+        self.dino_rect.x = self.x_pos
+        self.dino_rect.y = self.y_pos
+        self.step_index +=1
     
 
     def run(self):
@@ -110,7 +117,13 @@ class Dinosaur:
 
 
     def jump(self):
-        pass
+        self.image = self.jump_img
+        if self.dino_jump:
+            self.dino_rect.y -= self.jump_vel * 4
+            self.jump_vel -= 0.8
+        if self.jump_vel < -self.Jump_Vel:
+            self.dino_jump = False
+            self.jump_vel = self.Jump_Vel 
 
 
     

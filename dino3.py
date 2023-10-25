@@ -168,7 +168,7 @@ def main():
     cloud = Cloud()
     game_speed = 28
     x_pos_bg  = 0
-    y_pos_bg  = 380
+    y_pos_bg  = 360
     points = 0 
     font = pygame.font.Font("fonts/FreeSansBold.ttf", 20)
 
@@ -180,7 +180,7 @@ def main():
         if points % 100 == 0:
             game_speed += 1
         
-        text = font.render("Yigilgan ball: "+ str(points*5), True, (0, 0, 0))
+        text = font.render("Point: "+ str(points*5), True, (0, 0, 0))
         textRect = text.get_rect()
         textRect.center = (1000, 40)
         screen.blit(text, textRect)
