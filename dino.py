@@ -10,6 +10,9 @@ pygame.init()
 ScreenHeight = 600
 ScreenWidth  = 1200
 
+#muzika yuklash
+pygame.mixer.music.load("Go-go-go.mp3")
+pygame.mixer.music.play(-1)
 
 
 # ekranni sozlamalarini qullash
@@ -40,7 +43,8 @@ CLOUD        = pygame.image.load(os.path.join("dino/Other", "Cloud.png"))
 
 BG           = pygame.image.load(os.path.join("dino/Other", "Track.png"))
 
-
+# musiqa uchirib yoqish uchun uzgaruvchi
+flPause  = False
 
 # boshlaymiz
 
@@ -249,9 +253,20 @@ def main():
 
 
     while run:
+        global flPause
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            #space knopkasini bosganda uchirib yoqish
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    flPause = not flPause
+                    if flPause:
+                        pygame.mixer.music.pause()
+                    else:
+                        pygame.mixer.music.unpause()
+            
+                    
         
 
         screen.fill((255, 255, 255))
@@ -303,6 +318,7 @@ def main():
 def menu(death_count):
     global points
     run = True
+
     while run:
         screen.fill((255, 255, 255))
         font = pygame.font.Font("fonts/FreeSansBold.ttf", 30)
